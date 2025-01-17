@@ -1,1 +1,1 @@
-# This is a place force us to keep going on the journey of "Intro to stat learning"!
+# This is a place encouraging us to keep going on the journey of "Intro to stat learning"!
