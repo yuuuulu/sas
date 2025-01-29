@@ -1,0 +1,77 @@
+---
+title: "Bayesian Stat"
+format: html
+editor: visual
+---
+
+# Ch2
+
+
+
+
+## Monte Carlo Error
+
+- Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ ~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
+
+```{r}
+# Set seed for reproducibility
+set.seed(123)
+
+# Define sample sizes
+n_values <- c(10, 100, 1000, 10000, 100000)
+
+# Number of repetitions for each n
+reps <- 3
+
+# Initialize storage for results
+results <- matrix(NA, nrow = length(n_values), ncol = 2 * reps)
+
+# Loop over different values of n
+for (i in 1:length(n_values)) {
+  n <- n_values[i]
+  
+  # 初始化操作--创建一个长度为 reps 的数值向量，并初始化所有元素为 0。
+  means <- numeric(reps) 
+  sds <- numeric(reps)
+  
+  # Repeat simulation for each repetition
+  for (j in 1:reps) {
+    sample <- rnorm(n)  # Generate n samples from N(0,1)
+    means[j] <- mean(sample)  # Compute sample mean
+    sds[j] <- sd(sample)  # Compute sample standard deviation
+  }
+  
+  # Store results
+  results[i, ] <- c(rbind(means, sds))
+}
+
+# Convert results into a data frame
+results_df <- as.data.frame(results)
+colnames(results_df) <- c("Mean_1", "SD_1", "Mean_2", "SD_2", "Mean_3", "SD_3")
+rownames(results_df) <- n_values
+
+# Print results
+print(results_df)
+
+# Compute Monte Carlo errors for repetition 1
+# sapply() is one of the apply() series of functions that apply some function to each element of a list or vector and return the vector.
+mc_errors <- sapply(seq_along(n_values), function(i) sd(rnorm(n_values[i])) / sqrt(n_values[i]))  
+
+# Print Monte Carlo errors
+print(mc_errors)
+
+```
+
+
+
+
+
+## Uniform Generates Everything (Uniform生万物)
+
+## Density plot
+
+```{r}
+theta <- c(1, 2, 3, 4, 5)
+plot(density(theta), type="l")
+```
+

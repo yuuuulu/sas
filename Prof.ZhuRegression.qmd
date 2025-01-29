@@ -1,0 +1,107 @@
+---
+title: "Regression"
+format: html
+editor: visual
+---
+
+
+
+
+```{r}
+
+library(car)
+library(MASS)
+library(leaps)
+library(bootstrap)
+
+
+
+states <- as.data.frame(state.x77[,c("Murder", "Population",
+                          "Illiteracy", "Income", "Frost")])
+states[1:10,]
+# correlation(Pearson)
+cor(states)
+```
+Independent variables' correlation might not be 0 if the dimension of x(number of x) is large enough since some of them must have the linear relationship
+```{r}
+plot(states)
+scatterplotMatrix(states, spread=FALSE, smoother.args=list(lty=2),,
+    main="Scatter Plot Matrix")
+
+
+fit <- lm(Murder ~ Population + Illiteracy + Income + Frost,
+            data=states)
+summary(fit)
+```
+
+R and adjusted R
+
+residual vs leverage 
+
+```{r}
+confint(fit)
+predict(fit)
+
+# Model diagnostic
+par(mfrow=c(2,2))
+plot(fit)
+
+# Unusual observations 
+# Outliers, High-leverage points, Influential observations 
+# Transforming variables 
+
+ 
+ 
+# Model Comparisions 
+fit2 <- lm(Murder ~ Population + Illiteracy, data=states)
+anova(fit2, fit)
+AIC(fit)
+AIC(fit2)
+
+
+# Variable selection 
+#backward, forward, stepwise, all models comparision
+
+stepAIC(fit, direction="backward")
+
+leaps <-regsubsets(Murder ~ Population + Illiteracy + Income +
+                   Frost, data=states, nbest=4)
+
+shrinkage <- function(fit, k=10){
+  require(bootstrap)
+  theta.fit <- function(x,y){lsfit(x,y)}
+  theta.predict <- function(fit,x){cbind(1,x)%*%fit$coef}
+  x <- fit$model[,2:ncol(fit$model)]
+  y <- fit$model[,1]
+  results <- crossval(x, y, theta.fit, theta.predict, ngroup=k)
+  r2 <- cor(y, fit$fitted.values)^2
+  r2cv <- cor(y, results$cv.fit)^2
+  cat("Original R-square =", r2, "\n")
+  cat(k, "Fold Cross-Validated R-square =", r2cv, "\n")
+  cat("Change =", r2-r2cv, "\n")
+  }
+shrinkage(fit)
+
+# 
+
+fit3<- glm(Murder ~ Population + Illiteracy + Income + Frost,
+            data=states, family=Gamma())
+fit4<- glm(Murder ~ Population + Illiteracy + Income + Frost,
+            data=states, family=inverse.gaussian())
+
+fit5<- glm(Murder ~ Population + Illiteracy + Income + Frost,
+            data=states, family=gaussian())
+fit6<- glm(Murder ~ Population + Illiteracy + Income + Frost,
+            data=states, family=gaussian(link="inverse"))
+            
+            
+library(survival)
+
+test1 <- list(time=c(1,2,1,1,5,3,3,3,3,3,4,4,4,4,4,5,5), 
+              status=c(1,1,1,0,1,1,0,1,1,1,0,1,0,1,1,0,0), 
+              x=c(0,2,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1), 
+              sex=c(0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,1,1)) 
+coxph(Surv(time, status) ~ x + sex, test1) 
+coxph(Surv(time, status) ~ x * sex, test1) 
+```
+
