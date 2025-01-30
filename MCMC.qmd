@@ -14,8 +14,14 @@ editor: visual
 - Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ ~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
 
 ```{r}
-# Set seed for reproducibility
-set.seed(123)
+
+
+a <- c(1, 2)
+b <- c(3, 4)
+rbind(a,b)
+c(rbind(a, b))
+cbind(a,b)
+
 
 # Define sample sizes
 n_values <- c(10, 100, 1000, 10000, 100000)
@@ -41,7 +47,8 @@ for (i in 1:length(n_values)) {
     sds[j] <- sd(sample)  # Compute sample standard deviation
   }
   
-  # Store results
+  
+  # Store results 
   results[i, ] <- c(rbind(means, sds))
 }
 
@@ -55,7 +62,7 @@ print(results_df)
 
 # Compute Monte Carlo errors for repetition 1
 # sapply() is one of the apply() series of functions that apply some function to each element of a list or vector and return the vector.
-mc_errors <- sapply(seq_along(n_values), function(i) sd(rnorm(n_values[i])) / sqrt(n_values[i]))  
+mc_errors <- sapply(1:length(n_values), function(i) {sd(rnorm(n_values[i])) / sqrt(n_values[i])})  
 
 # Print Monte Carlo errors
 print(mc_errors)
@@ -64,11 +71,66 @@ print(mc_errors)
 
 
 
+## Direct Sampling
+
+### Uniform Generates Everything-1 (Uniform生万物)
 
 
-## Uniform Generates Everything (Uniform生万物)
 
-## Density plot
+$F(x)=P(X\leq x)$, generate U~U[0,1], let X=$F^{-1}(U)$ 
+
+#### Proof
+
+Let X=$F^{-1}(U)$
+
+$P(X\leq x) = P(F^{-1}(U)\leq x)$ F is cdf--F is strictly monotonic, increasing and continuous function of x hence $ P(F^{-1}(U)\leq x)=P(F(F^{-1}(U)\leq F(x))$ i.e.  $P(U\leq F(x))$. As U is a U[0,1] random variable, so that  $P(U\leq F(x))$ = F(x) since $P(U\leq x)$ is the cdf of U~[0,1] i.e. $P(F^{-1}(U)) \leq x)=F(x)$ ---$P(X\leq x) = F(x)$ since we have let X=$F^{-1}(U)$.
+
+
+So,  each PDF could be represented as a function of U where U~[0,1].
+
+
+
+
+## Rejection Sampling 
+
+### Uniform Generates Everything-2 (Uniform生万物)
+
+
+Simulate $\theta$ Y~U[0,g$\theta$] --accepting rule of Y 
+
+
+
+
+## Importance Sampling 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## R basic coding 
+
+
+
+
+- Density plot
 
 ```{r}
 theta <- c(1, 2, 3, 4, 5)
