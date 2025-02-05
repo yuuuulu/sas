@@ -8,7 +8,7 @@ editor: visual
 
 ## Monte Carlo Error
 
--   Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ ~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
+-   Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ \~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
 
 ```{r}
 
@@ -70,24 +70,27 @@ print(mc_errors)
 
 ### Uniform Generates Everything-1 (Uniform生万物)
 
-$F(x)=P(X\leq x)$, generate U~U[0,1], let X=$F^{-1}(U)$
+$F(x)=P(X\leq x)$, generate U\~U\[0,1\], let X=$F^{-1}(U)$
 
 #### Proof
 
 Let X=$F^{-1}(U)$
 
-$P(X\leq x) = P(F^{-1}(U)\leq x)$ F is cdf--F is strictly monotonic, increasing and continuous function of x hence $P(F^{-1}(U)\leq x)=P(F(F{-1}(U)\leq F(x))$ i.e. $P(U\leq F(x))$. As U is a U[0,1] random variable, so that $P(U\leq F(x))$ = F(x) since $P(U\leq x)$ is the cdf of U~[0,1] i.e. $P(F^{-1}(U)) \leq x)=F(x)$ ---$P(X\leq x) = F(x)$ since we have let X=$F^{-1}(U)$.
+$P(X\leq x) = P(F^{-1}(U)\leq x)$ F is cdf--F is strictly monotonic, increasing and continuous function of x hence $P(F^{-1}(U)\leq x)=P(F(F{-1}(U)\leq F(x))$ i.e. $P(U\leq F(x))$. As U is a U\[0,1\] random variable, so that $P(U\leq F(x))$ = F(x) since $P(U\leq x)$ is the cdf of U\~\[0,1\] i.e. $P(F^{-1}(U)) \leq x)=F(x)$ ---$P(X\leq x) = F(x)$ since we have let X=$F^{-1}(U)$.
 
-So, each PDF could be represented as a function of U where U~[0,1].
+So, each PDF could be represented as a function of U where U\~\[0,1\].
 
 ## Rejection Sampling
 
 ### Uniform Generates Everything-2 (Uniform生万物)
 
-Simulate $\theta$ Y~U0,g$\theta$ --accepting rule of Y
-
+Simulate $\theta$ Y\~U0,g$\theta$ --accepting rule of Y
 
 ### 1d eg
+
+Background picture：
+
+![](images/clipboard-85383824.png)
 
 ```{r}
 f = function(x){
@@ -95,7 +98,7 @@ f = function(x){
 }
 
 
-# numeric calculation
+# numeric calculation（Riemann sum）
 dx=0.01
 x=seq(-5,5,dx)
 f.x=f(x)
@@ -104,7 +107,7 @@ sqrt(pi)
 
 
 # Rejection Sampling to estimate f（x）= exp(-x^2)
-# Uniform(-5,5)
+# Uniform(-5,5) not bounded so we choose c* it later.
 g.x = runif(10000, -5, 5)
 
 peak_f <- f(0) #- standard normal
@@ -114,8 +117,10 @@ peak_g_uniform <- 1 / (5 - (-5))
 
 c = peak_f / peak_g_uniform # how much (the highest point of) f.x is bigger than g.x
 
+# g.x在-5到5间
 t = f(g.x) / (c * dunif(g.x, -5, 5))
 u = runif(10000)
+?runif
 indices = (u < t)
 hist(g.x[indices])
 ratio = sum(indices) / length(indices)
@@ -126,14 +131,20 @@ integral.f
 g.x = rnorm(1000)
 c = 2.55
 t = f(g.x) / (c * dnorm(g.x))
-u = runif(1000)
+u = runif(1000) # Y-axis distribution(since 0-1, uniform!)
 indices = (u < t)
 hist(g.x[indices])
 ratio = sum(indices) / length(indices)
 integral.f = ratio * c
 integral.f
 
-# Importance Sampling
+```
+
+## Importance Sampling
+
+eg.
+
+```{r}
 g.x = rnorm(100000)
 w = f(g.x) / dnorm(g.x)
 mean(w)
@@ -143,16 +154,11 @@ w = f(g.x) / dunif(g.x, -5, 5)
 mean(w)
 ```
 
-
-## Importance Sampling
-
-# SIR（Sampling Importance Resampling）
+## SIR（Sampling Importance Resampling）
 
 这个过程在统计学中被称为重要性重采样或采样重要性重采样（SIR），是一种模拟从复杂分布中抽样的方法。 在SIR方法中，原始样本集合中的某些样本可能会因为具有较高的概率权重而被多次抽取，而其他样本则可能很少或根本不被抽取。这种方法可以用来近似目标分布，特别是当目标分布难以直接抽样时。
 
 ![](images/clipboard-726327136.png)
-
-
 
 ```{r}
 # Sampling Importance Resampling - SIR

@@ -188,12 +188,12 @@ b    3    4</code></pre>
 <span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
 <span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            Mean_1      SD_1        Mean_2      SD_2       Mean_3      SD_3
-10    -0.222935656 1.2848676 -0.1767617153 1.0639362  0.394836538 0.7583442
-100    0.164629977 0.9833797  0.0096871603 0.9042069 -0.070380683 0.8870391
-1000  -0.021809974 0.9944759  0.0356222658 0.9778668  0.031166338 1.0187411
-10000  0.009188513 0.9928316 -0.0028974689 0.9981655 -0.004156853 1.0147705
-1e+05 -0.001968862 1.0010673 -0.0003112835 1.0016263  0.009192224 1.0004835</code></pre>
+<pre><code>             Mean_1      SD_1       Mean_2      SD_2       Mean_3      SD_3
+10    -0.1524802634 0.6713132 -0.402303768 0.7257004 -0.179041468 0.9682968
+100    0.0008194733 1.1079492 -0.157142718 1.0707687 -0.088075694 0.9511530
+1000  -0.0066467194 0.9644927 -0.022070260 0.9831566  0.048646890 0.9892548
+10000  0.0035577302 1.0016043 -0.012684868 0.9930400 -0.009979459 1.0032820
+1e+05  0.0009079651 1.0056631  0.005324358 1.0009696 -0.005499349 1.0018329</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Monte Carlo errors for repetition 1</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sapply() is one of the apply() series of functions that apply some function to each element of a list or vector and return the vector.</span></span>
@@ -202,7 +202,7 @@ b    3    4</code></pre>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print Monte Carlo errors</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc_errors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.424308122 0.095423816 0.031844612 0.009936281 0.003154967</code></pre>
+<pre><code>[1] 0.376261941 0.110167907 0.030945334 0.010017433 0.003156344</code></pre>
 </div>
 </div>
 </section>
@@ -227,13 +227,15 @@ b    3    4</code></pre>
 </section>
 <section id="d-eg" class="level3">
 <h3 class="anchored" data-anchor-id="d-eg">1d eg</h3>
+<p>Background picture：</p>
+<p><img src="images/clipboard-85383824.png" class="img-fluid"></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x){</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric calculation</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric calculation（Riemann sum）</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>dx<span class="ot">=</span><span class="fl">0.01</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,dx)</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>f.x<span class="ot">=</span><span class="fu">f</span>(x)</span>
@@ -246,7 +248,7 @@ b    3    4</code></pre>
 <pre><code>[1] 1.772454</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rejection Sampling to estimate f（x）= exp(-x^2)</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Uniform(-5,5)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Uniform(-5,5) not bounded so we choose c* it later.</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">10000</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>peak_f <span class="ot">&lt;-</span> <span class="fu">f</span>(<span class="dv">0</span>) <span class="co">#- standard normal</span></span>
@@ -256,10 +258,12 @@ b    3    4</code></pre>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>c <span class="ot">=</span> peak_f <span class="sc">/</span> peak_g_uniform <span class="co"># how much (the highest point of) f.x is bigger than g.x</span></span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> (c <span class="sc">*</span> <span class="fu">dunif</span>(g.x, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">10000</span>)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>indices <span class="ot">=</span> (u <span class="sc">&lt;</span> t)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(g.x[indices])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># g.x在-5到5间</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> (c <span class="sc">*</span> <span class="fu">dunif</span>(g.x, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">10000</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>?runif</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>indices <span class="ot">=</span> (u <span class="sc">&lt;</span> t)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(g.x[indices])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -271,13 +275,13 @@ b    3    4</code></pre>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>integral.f <span class="ot">=</span> ratio <span class="sc">*</span> c</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>integral.f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.76</code></pre>
+<pre><code>[1] 1.804</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal Distribution</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">=</span> <span class="fl">2.55</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> (c <span class="sc">*</span> <span class="fu">dnorm</span>(g.x))</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>) <span class="co"># Y-axis distribution(since 0-1, uniform!)</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>indices <span class="ot">=</span> (u <span class="sc">&lt;</span> t)</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(g.x[indices])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -291,30 +295,31 @@ b    3    4</code></pre>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>integral.f <span class="ot">=</span> ratio <span class="sc">*</span> c</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>integral.f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.7289</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importance Sampling</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> <span class="fu">dnorm</span>(g.x)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.773084</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">100000</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> <span class="fu">dunif</span>(g.x, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.776034</code></pre>
+<pre><code>[1] 1.785</code></pre>
 </div>
 </div>
 </section>
 </section>
 <section id="importance-sampling" class="level2">
 <h2 class="anchored" data-anchor-id="importance-sampling">Importance Sampling</h2>
+<p>eg.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> <span class="fu">dnorm</span>(g.x)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.77034</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">100000</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> <span class="fu">dunif</span>(g.x, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.782015</code></pre>
+</div>
+</div>
 </section>
-</section>
-<section id="sirsampling-importance-resampling" class="level1">
-<h1>SIR（Sampling Importance Resampling）</h1>
+<section id="sirsampling-importance-resampling" class="level2">
+<h2 class="anchored" data-anchor-id="sirsampling-importance-resampling">SIR（Sampling Importance Resampling）</h2>
 <p>这个过程在统计学中被称为重要性重采样或采样重要性重采样（SIR），是一种模拟从复杂分布中抽样的方法。 在SIR方法中，原始样本集合中的某些样本可能会因为具有较高的概率权重而被多次抽取，而其他样本则可能很少或根本不被抽取。这种方法可以用来近似目标分布，特别是当目标分布难以直接抽样时。</p>
 <p><img src="images/clipboard-726327136.png" class="img-fluid"></p>
 <div class="cell">
@@ -330,7 +335,7 @@ b    3    4</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="MCMC_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="MCMC_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -355,7 +360,7 @@ b    3    4</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="MCMC_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="MCMC_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -370,11 +375,11 @@ b    3    4</code></pre>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">#检查权重均值</span></span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(new_weights) <span class="co"># should be ~ 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9914038</code></pre>
+<pre><code>[1] 0.9870844</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(weights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.051324</code></pre>
+<pre><code>[1] 5.075601</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 归一化新权重</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>new_weights_norm <span class="ot">=</span> new_weights <span class="sc">/</span> <span class="fu">sum</span>(new_weights)</span>
@@ -391,11 +396,12 @@ b    3    4</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="MCMC_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="MCMC_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
 <section id="r-basic-coding" class="level2">
 <h2 class="anchored" data-anchor-id="r-basic-coding">R basic coding</h2>
 <ul>
@@ -407,7 +413,7 @@ b    3    4</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="MCMC_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="MCMC_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
