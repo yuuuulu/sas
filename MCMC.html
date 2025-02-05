@@ -189,11 +189,11 @@ b    3    4</code></pre>
 <span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Mean_1      SD_1        Mean_2      SD_2       Mean_3      SD_3
-10     0.221480310 1.0349178  0.1258237982 1.3871081 -0.445265151 0.6852137
-100   -0.101266719 1.0570166 -0.1114645663 1.1199187  0.175386839 0.8816961
-1000  -0.013546584 1.0238126 -0.0136660673 0.9794928  0.021376946 1.0040733
-10000  0.018280424 0.9979921  0.0022928020 0.9927422  0.014664480 1.0135786
-1e+05 -0.001249403 1.0022178 -0.0003029861 1.0034819 -0.001745422 0.9985657</code></pre>
+10    -0.222935656 1.2848676 -0.1767617153 1.0639362  0.394836538 0.7583442
+100    0.164629977 0.9833797  0.0096871603 0.9042069 -0.070380683 0.8870391
+1000  -0.021809974 0.9944759  0.0356222658 0.9778668  0.031166338 1.0187411
+10000  0.009188513 0.9928316 -0.0028974689 0.9981655 -0.004156853 1.0147705
+1e+05 -0.001968862 1.0010673 -0.0003112835 1.0016263  0.009192224 1.0004835</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Monte Carlo errors for repetition 1</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sapply() is one of the apply() series of functions that apply some function to each element of a list or vector and return the vector.</span></span>
@@ -202,7 +202,7 @@ b    3    4</code></pre>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print Monte Carlo errors</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc_errors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.326884627 0.101775864 0.031352455 0.009965257 0.003162885</code></pre>
+<pre><code>[1] 0.424308122 0.095423816 0.031844612 0.009936281 0.003154967</code></pre>
 </div>
 </div>
 </section>
@@ -214,7 +214,7 @@ b    3    4</code></pre>
 <section id="proof" class="level4">
 <h4 class="anchored" data-anchor-id="proof">Proof</h4>
 <p>Let X=<span class="math inline">\(F^{-1}(U)\)</span></p>
-<p><span class="math inline">\(P(X\leq x) = P(F^{-1}(U)\leq x)\)</span> F is cdf–F is strictly monotonic, increasing and continuous function of x hence $ P(F<sup>{-1}(U)x)=P(F(F</sup>{-1}(U)F(x))$ i.e.&nbsp;<span class="math inline">\(P(U\leq F(x))\)</span>. As U is a U[0,1] random variable, so that <span class="math inline">\(P(U\leq F(x))\)</span> = F(x) since <span class="math inline">\(P(U\leq x)\)</span> is the cdf of U~[0,1] i.e.&nbsp;<span class="math inline">\(P(F^{-1}(U)) \leq x)=F(x)\)</span> —<span class="math inline">\(P(X\leq x) = F(x)\)</span> since we have let X=<span class="math inline">\(F^{-1}(U)\)</span>.</p>
+<p><span class="math inline">\(P(X\leq x) = P(F^{-1}(U)\leq x)\)</span> F is cdf–F is strictly monotonic, increasing and continuous function of x hence <span class="math inline">\(P(F^{-1}(U)\leq x)=P(F(F{-1}(U)\leq F(x))\)</span> i.e.&nbsp;<span class="math inline">\(P(U\leq F(x))\)</span>. As U is a U[0,1] random variable, so that <span class="math inline">\(P(U\leq F(x))\)</span> = F(x) since <span class="math inline">\(P(U\leq x)\)</span> is the cdf of U~[0,1] i.e.&nbsp;<span class="math inline">\(P(F^{-1}(U)) \leq x)=F(x)\)</span> —<span class="math inline">\(P(X\leq x) = F(x)\)</span> since we have let X=<span class="math inline">\(F^{-1}(U)\)</span>.</p>
 <p>So, each PDF could be represented as a function of U where U~[0,1].</p>
 </section>
 </section>
@@ -223,24 +223,191 @@ b    3    4</code></pre>
 <h2 class="anchored" data-anchor-id="rejection-sampling">Rejection Sampling</h2>
 <section id="uniform-generates-everything-2-uniform生万物" class="level3">
 <h3 class="anchored" data-anchor-id="uniform-generates-everything-2-uniform生万物">Uniform Generates Everything-2 (Uniform生万物)</h3>
-<p>Simulate <span class="math inline">\(\theta\)</span> Y~U[0,g<span class="math inline">\(\theta\)</span>] –accepting rule of Y</p>
+<p>Simulate <span class="math inline">\(\theta\)</span> Y~U0,g<span class="math inline">\(\theta\)</span> –accepting rule of Y</p>
+</section>
+<section id="d-eg" class="level3">
+<h3 class="anchored" data-anchor-id="d-eg">1d eg</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric calculation</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>dx<span class="ot">=</span><span class="fl">0.01</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,dx)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>f.x<span class="ot">=</span><span class="fu">f</span>(x)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(f.x<span class="sc">*</span>dx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.772454</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(pi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.772454</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rejection Sampling to estimate f（x）= exp(-x^2)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Uniform(-5,5)</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">10000</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>peak_f <span class="ot">&lt;-</span> <span class="fu">f</span>(<span class="dv">0</span>) <span class="co">#- standard normal</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算均匀分布的峰值</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>peak_g_uniform <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">5</span> <span class="sc">-</span> (<span class="sc">-</span><span class="dv">5</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>c <span class="ot">=</span> peak_f <span class="sc">/</span> peak_g_uniform <span class="co"># how much (the highest point of) f.x is bigger than g.x</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> (c <span class="sc">*</span> <span class="fu">dunif</span>(g.x, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">10000</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>indices <span class="ot">=</span> (u <span class="sc">&lt;</span> t)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(g.x[indices])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MCMC_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ratio <span class="ot">=</span> <span class="fu">sum</span>(indices) <span class="sc">/</span> <span class="fu">length</span>(indices)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>integral.f <span class="ot">=</span> ratio <span class="sc">*</span> c</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>integral.f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.76</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal Distribution</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">=</span> <span class="fl">2.55</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> (c <span class="sc">*</span> <span class="fu">dnorm</span>(g.x))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>indices <span class="ot">=</span> (u <span class="sc">&lt;</span> t)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(g.x[indices])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MCMC_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ratio <span class="ot">=</span> <span class="fu">sum</span>(indices) <span class="sc">/</span> <span class="fu">length</span>(indices)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>integral.f <span class="ot">=</span> ratio <span class="sc">*</span> c</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>integral.f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.7289</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importance Sampling</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> <span class="fu">dnorm</span>(g.x)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.773084</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>g.x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">100000</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">f</span>(g.x) <span class="sc">/</span> <span class="fu">dunif</span>(g.x, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.776034</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="importance-sampling" class="level2">
 <h2 class="anchored" data-anchor-id="importance-sampling">Importance Sampling</h2>
 </section>
+</section>
+<section id="sirsampling-importance-resampling" class="level1">
+<h1>SIR（Sampling Importance Resampling）</h1>
+<p>这个过程在统计学中被称为重要性重采样或采样重要性重采样（SIR），是一种模拟从复杂分布中抽样的方法。 在SIR方法中，原始样本集合中的某些样本可能会因为具有较高的概率权重而被多次抽取，而其他样本则可能很少或根本不被抽取。这种方法可以用来近似目标分布，特别是当目标分布难以直接抽样时。</p>
+<p><img src="images/clipboard-726327136.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sampling Importance Resampling - SIR</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># f(x) - desired (unnormalized) distribution - 5*chi-square(df=5)</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># g(x) - proposed distribution - exponential</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">1000000</span> <span class="co">#sample size</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 从提议分布中生成样本</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>x_exp_sample <span class="ot">=</span> <span class="fu">rexp</span>(n) <span class="co"># Samples are generated from the exponential distribution as a proposed distribution.</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">#  绘制提议分布的直方图</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)) <span class="co"># 1 row 1 column</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x_exp_sample) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MCMC_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算目标分布的未归一化概率密度</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>f_x_unnormalized_pdf <span class="ot">=</span> <span class="dv">5</span><span class="sc">*</span><span class="fu">dchisq</span>(x_exp_sample, <span class="at">df=</span><span class="dv">5</span>) <span class="co"># dchisq 函数返回的是概率密度值，而不是概率值（即未归一化的概率值），所以这里乘以5（或其他常数）是为了得到未归一化的卡方分布的概率密度值。f_x_unnormalized_pdf存储了每个指数分布样本点在自由度为5的卡方分布下的未归一化概率密度值</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  计算提议分布的概率密度</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>g_x_pdf <span class="ot">=</span> <span class="fu">dexp</span>(x_exp_sample) <span class="co"># 计算提议分布（指数分布）的概率密度函数。</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#权重</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">=</span> f_x_unnormalized_pdf <span class="sc">/</span> g_x_pdf <span class="co"># 计算每个样本的权重</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">#归一化权重</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>weights_norm <span class="ot">=</span> weights <span class="sc">/</span> <span class="fu">sum</span>(weights) <span class="co"># 归一化权重</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># resampling</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>f_x_sample <span class="ot">=</span> <span class="fu">sample</span>(x_exp_sample, <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> weights_norm) </span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制目标分布和重采样结果的直方图（对比真实和resampling）</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rchisq</span>(n, <span class="at">df=</span><span class="dv">5</span>)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x[x<span class="sc">&lt;</span><span class="dv">15</span>], <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"Chi-Square"</span>)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(f_x_sample, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"SIR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MCMC_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><img src="images/clipboard-2862992679.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># moving from f1(x) to f2(x)从卡方分布转移到 F 分布</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>f_1 <span class="ot">=</span> <span class="fu">dchisq</span>(f_x_sample, <span class="at">df=</span><span class="dv">5</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>f_2 <span class="ot">=</span> <span class="fu">df</span>(f_x_sample, <span class="at">df1=</span><span class="dv">5</span>, <span class="at">df2=</span><span class="dv">25</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>new_weights <span class="ot">=</span> f_2 <span class="sc">/</span> f_1</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">#检查权重均值</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(new_weights) <span class="co"># should be ~ 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9914038</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(weights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.051324</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 归一化新权重</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>new_weights_norm <span class="ot">=</span> new_weights <span class="sc">/</span> <span class="fu">sum</span>(new_weights)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  重采样生成 F 分布样本</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>f2_x_sample <span class="ot">=</span> <span class="fu">sample</span>(f_x_sample, <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> new_weights_norm)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制 F 分布和重采样结果的直方图</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rf</span>(n, <span class="dv">5</span>, <span class="dv">25</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x[x<span class="sc">&lt;</span><span class="dv">15</span>], <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"F(5,25)"</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(f2_x_sample, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"SIR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MCMC_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <section id="r-basic-coding" class="level2">
 <h2 class="anchored" data-anchor-id="r-basic-coding">R basic coding</h2>
 <ul>
 <li>Density plot</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta), <span class="at">type=</span><span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta), <span class="at">type=</span><span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="MCMC_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="MCMC_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

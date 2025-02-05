@@ -6,12 +6,9 @@ editor: visual
 
 # Ch2
 
-
-
-
 ## Monte Carlo Error
 
-- Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ ~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
+-   Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ ~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
 
 ```{r}
 
@@ -69,71 +66,160 @@ print(mc_errors)
 
 ```
 
-
-
 ## Direct Sampling
 
 ### Uniform Generates Everything-1 (Uniform生万物)
 
-
-
-$F(x)=P(X\leq x)$, generate U~U[0,1], let X=$F^{-1}(U)$ 
+$F(x)=P(X\leq x)$, generate U~U[0,1], let X=$F^{-1}(U)$
 
 #### Proof
 
 Let X=$F^{-1}(U)$
 
-$P(X\leq x) = P(F^{-1}(U)\leq x)$ F is cdf--F is strictly monotonic, increasing and continuous function of x hence $ P(F^{-1}(U)\leq x)=P(F(F^{-1}(U)\leq F(x))$ i.e.  $P(U\leq F(x))$. As U is a U[0,1] random variable, so that  $P(U\leq F(x))$ = F(x) since $P(U\leq x)$ is the cdf of U~[0,1] i.e. $P(F^{-1}(U)) \leq x)=F(x)$ ---$P(X\leq x) = F(x)$ since we have let X=$F^{-1}(U)$.
+$P(X\leq x) = P(F^{-1}(U)\leq x)$ F is cdf--F is strictly monotonic, increasing and continuous function of x hence $P(F^{-1}(U)\leq x)=P(F(F{-1}(U)\leq F(x))$ i.e. $P(U\leq F(x))$. As U is a U[0,1] random variable, so that $P(U\leq F(x))$ = F(x) since $P(U\leq x)$ is the cdf of U~[0,1] i.e. $P(F^{-1}(U)) \leq x)=F(x)$ ---$P(X\leq x) = F(x)$ since we have let X=$F^{-1}(U)$.
 
+So, each PDF could be represented as a function of U where U~[0,1].
 
-So,  each PDF could be represented as a function of U where U~[0,1].
-
-
-
-
-## Rejection Sampling 
+## Rejection Sampling
 
 ### Uniform Generates Everything-2 (Uniform生万物)
 
-
-Simulate $\theta$ Y~U[0,g$\theta$] --accepting rule of Y 
-
+Simulate $\theta$ Y~U0,g$\theta$ --accepting rule of Y
 
 
+### 1d eg
 
-## Importance Sampling 
-
-
-
-
-
-
+```{r}
+f = function(x){
+  return(exp(-x^2))
+}
 
 
+# numeric calculation
+dx=0.01
+x=seq(-5,5,dx)
+f.x=f(x)
+sum(f.x*dx)
+sqrt(pi)
+
+
+# Rejection Sampling to estimate f（x）= exp(-x^2)
+# Uniform(-5,5)
+g.x = runif(10000, -5, 5)
+
+peak_f <- f(0) #- standard normal
+
+# 计算均匀分布的峰值
+peak_g_uniform <- 1 / (5 - (-5))
+
+c = peak_f / peak_g_uniform # how much (the highest point of) f.x is bigger than g.x
+
+t = f(g.x) / (c * dunif(g.x, -5, 5))
+u = runif(10000)
+indices = (u < t)
+hist(g.x[indices])
+ratio = sum(indices) / length(indices)
+integral.f = ratio * c
+integral.f
+
+# Normal Distribution
+g.x = rnorm(1000)
+c = 2.55
+t = f(g.x) / (c * dnorm(g.x))
+u = runif(1000)
+indices = (u < t)
+hist(g.x[indices])
+ratio = sum(indices) / length(indices)
+integral.f = ratio * c
+integral.f
+
+# Importance Sampling
+g.x = rnorm(100000)
+w = f(g.x) / dnorm(g.x)
+mean(w)
+
+g.x = runif(100000, -5, 5)
+w = f(g.x) / dunif(g.x, -5, 5)
+mean(w)
+```
+
+
+## Importance Sampling
+
+# SIR（Sampling Importance Resampling）
+
+这个过程在统计学中被称为重要性重采样或采样重要性重采样（SIR），是一种模拟从复杂分布中抽样的方法。 在SIR方法中，原始样本集合中的某些样本可能会因为具有较高的概率权重而被多次抽取，而其他样本则可能很少或根本不被抽取。这种方法可以用来近似目标分布，特别是当目标分布难以直接抽样时。
+
+![](images/clipboard-726327136.png)
 
 
 
+```{r}
+# Sampling Importance Resampling - SIR
+# f(x) - desired (unnormalized) distribution - 5*chi-square(df=5)
+# g(x) - proposed distribution - exponential
+n = 1000000 #sample size
+# 从提议分布中生成样本
+x_exp_sample = rexp(n) # Samples are generated from the exponential distribution as a proposed distribution.
+#  绘制提议分布的直方图
+par(mfrow=c(1,1)) # 1 row 1 column
+hist(x_exp_sample) 
 
 
+# 计算目标分布的未归一化概率密度
+f_x_unnormalized_pdf = 5*dchisq(x_exp_sample, df=5) # dchisq 函数返回的是概率密度值，而不是概率值（即未归一化的概率值），所以这里乘以5（或其他常数）是为了得到未归一化的卡方分布的概率密度值。f_x_unnormalized_pdf存储了每个指数分布样本点在自由度为5的卡方分布下的未归一化概率密度值
+
+#  计算提议分布的概率密度
+g_x_pdf = dexp(x_exp_sample) # 计算提议分布（指数分布）的概率密度函数。
+
+#权重
+weights = f_x_unnormalized_pdf / g_x_pdf # 计算每个样本的权重
+#归一化权重
+weights_norm = weights / sum(weights) # 归一化权重
+# resampling
+f_x_sample = sample(x_exp_sample, size = n, replace = TRUE, prob = weights_norm) 
+
+# 绘制目标分布和重采样结果的直方图（对比真实和resampling）
+par(mfrow=c(1,2))
+x = rchisq(n, df=5)
+hist(x[x<15], breaks = seq(0,15,1), main="Chi-Square")
+hist(f_x_sample, breaks = seq(0,15,1), main="SIR")
 
 
+```
 
+![](images/clipboard-2862992679.png)
 
+```{r}
+# moving from f1(x) to f2(x)从卡方分布转移到 F 分布
+f_1 = dchisq(f_x_sample, df=5)
+f_2 = df(f_x_sample, df1=5, df2=25)
+new_weights = f_2 / f_1
 
+#检查权重均值
+mean(new_weights) # should be ~ 1
 
+mean(weights)
 
+# 归一化新权重
+new_weights_norm = new_weights / sum(new_weights)
 
+#  重采样生成 F 分布样本
 
+f2_x_sample = sample(f_x_sample, size = n, replace = TRUE, prob = new_weights_norm)
 
-## R basic coding 
+# 绘制 F 分布和重采样结果的直方图
+par(mfrow=c(1,2))
+x = rf(n, 5, 25)
+hist(x[x<15], breaks = seq(0,15,1), main="F(5,25)")
+hist(f2_x_sample, breaks = seq(0,15,1), main="SIR")
+```
 
+## R basic coding
 
-
-
-- Density plot
+-   Density plot
 
 ```{r}
 theta <- c(1, 2, 3, 4, 5)
 plot(density(theta), type="l")
 ```
-
