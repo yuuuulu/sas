@@ -1,14 +1,15 @@
 ---
 title: "Bayesian Stat"
-format: html
+format: 
+  html:
+    self-contained: true
 editor: visual
 ---
-
 # Ch2
 
 ## Monte Carlo Error
 
--   Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ ~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
+-   Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ \~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
 
 ```{r}
 
@@ -70,24 +71,27 @@ print(mc_errors)
 
 ### Uniform Generates Everything-1 (Uniform生万物)
 
-$F(x)=P(X\leq x)$, generate U~U[0,1], let X=$F^{-1}(U)$
+$F(x)=P(X\leq x)$, generate U\~U\[0,1\], let X=$F^{-1}(U)$
 
 #### Proof
 
 Let X=$F^{-1}(U)$
 
-$P(X\leq x) = P(F^{-1}(U)\leq x)$ F is cdf--F is strictly monotonic, increasing and continuous function of x hence $P(F^{-1}(U)\leq x)=P(F(F{-1}(U)\leq F(x))$ i.e. $P(U\leq F(x))$. As U is a U[0,1] random variable, so that $P(U\leq F(x))$ = F(x) since $P(U\leq x)$ is the cdf of U~[0,1] i.e. $P(F^{-1}(U)) \leq x)=F(x)$ ---$P(X\leq x) = F(x)$ since we have let X=$F^{-1}(U)$.
+$P(X\leq x) = P(F^{-1}(U)\leq x)$ F is cdf--F is strictly monotonic, increasing and continuous function of x hence $P(F^{-1}(U)\leq x)=P(F(F{-1}(U)\leq F(x))$ i.e. $P(U\leq F(x))$. As U is a U\[0,1\] random variable, so that $P(U\leq F(x))$ = F(x) since $P(U\leq x)$ is the cdf of U\~\[0,1\] i.e. $P(F^{-1}(U)) \leq x)=F(x)$ ---$P(X\leq x) = F(x)$ since we have let X=$F^{-1}(U)$.
 
-So, each PDF could be represented as a function of U where U~[0,1].
+So, each PDF could be represented as a function of U where U\~\[0,1\].
 
 ## Rejection Sampling
 
 ### Uniform Generates Everything-2 (Uniform生万物)
 
-Simulate $\theta$ Y~U0,g$\theta$ --accepting rule of Y
-
+Simulate $\theta$ Y\~U0,g$\theta$ --accepting rule of Y
 
 ### 1d eg
+
+Background picture：
+
+![](images/clipboard-85383824.png)
 
 ```{r}
 f = function(x){
@@ -95,7 +99,7 @@ f = function(x){
 }
 
 
-# numeric calculation
+# numeric calculation（Riemann sum）
 dx=0.01
 x=seq(-5,5,dx)
 f.x=f(x)
@@ -104,7 +108,7 @@ sqrt(pi)
 
 
 # Rejection Sampling to estimate f（x）= exp(-x^2)
-# Uniform(-5,5)
+# Uniform(-5,5) not bounded so we choose c* it later.
 g.x = runif(10000, -5, 5)
 
 peak_f <- f(0) #- standard normal
@@ -114,8 +118,10 @@ peak_g_uniform <- 1 / (5 - (-5))
 
 c = peak_f / peak_g_uniform # how much (the highest point of) f.x is bigger than g.x
 
+# g.x在-5到5间
 t = f(g.x) / (c * dunif(g.x, -5, 5))
-u = runif(10000)
+u = runif(10000) # Y-axis distribution(since 0-1, uniform!)
+?runif
 indices = (u < t)
 hist(g.x[indices])
 ratio = sum(indices) / length(indices)
@@ -124,16 +130,37 @@ integral.f
 
 # Normal Distribution
 g.x = rnorm(1000)
-c = 2.55
+
+# calculate c to bound totally
+g <- function(x) {
+  return(dnorm(x))
+}
+
+# 计算 f(x) 和 g(x) 在 x = 0 处的值
+f_0 <- f(0)
+g_0 <- g(0)
+
+# 计算 c 的值
+c <- f_0 / g_0
+
+# 输出 c 的值
+c # c=2.51
+c = 2.55 #稍微取大点
 t = f(g.x) / (c * dnorm(g.x))
-u = runif(1000)
+u = runif(1000) # Y-axis distribution(since 0-1, uniform!)
 indices = (u < t)
 hist(g.x[indices])
 ratio = sum(indices) / length(indices)
 integral.f = ratio * c
 integral.f
 
-# Importance Sampling
+```
+
+## Importance Sampling
+
+eg.
+
+```{r}
 g.x = rnorm(100000)
 w = f(g.x) / dnorm(g.x)
 mean(w)
@@ -143,16 +170,11 @@ w = f(g.x) / dunif(g.x, -5, 5)
 mean(w)
 ```
 
-
-## Importance Sampling
-
-# SIR（Sampling Importance Resampling）
+## SIR（Sampling Importance Resampling）
 
 这个过程在统计学中被称为重要性重采样或采样重要性重采样（SIR），是一种模拟从复杂分布中抽样的方法。 在SIR方法中，原始样本集合中的某些样本可能会因为具有较高的概率权重而被多次抽取，而其他样本则可能很少或根本不被抽取。这种方法可以用来近似目标分布，特别是当目标分布难以直接抽样时。
 
 ![](images/clipboard-726327136.png)
-
-
 
 ```{r}
 # Sampling Importance Resampling - SIR
@@ -213,6 +235,191 @@ par(mfrow=c(1,2))
 x = rf(n, 5, 25)
 hist(x[x<15], breaks = seq(0,15,1), main="F(5,25)")
 hist(f2_x_sample, breaks = seq(0,15,1), main="SIR")
+```
+
+## MCMC
+
+
+- trace plot 
+
+We choose N(0.5,$\sigma$) as the proposal distribution
+
+![](images/clipboard-1675546711.png)
+
+上图中，右侧是每次迭代输入的theta的值，左侧是每个theta出现的次数, and if $\theta_t$\~ N($\theta_{t-1}$, $\sigma$)----
+
+![](images/clipboard-3629770883.png)
+
+but why choose to depend on the previous..
+
+### Metropolis-Hastings
+
+acceptance probability= $\alpha (\theta_{new},\theta_{t-1})$= min[r($\theta_{new},\theta_{t-1}$),1], where r is the ratio of the new parameter's  and the t-1 parameter's posterior 
+
+then draw u~uniform(0,1) and if u is less than $\alpha$ then $\theta_t=\theta_{new}$ otherwise $\theta_t=\theta_{t-1}$
+
+```{r}
+# 设置随机种子以确保结果可复现
+set.seed(123)
+
+# 定义后验分布的密度函数，beta-- prior，binomial-- likelihood（实际上，后验分布应该是Beta(alpha + k, beta + n - k)，因为Beta分布是二项分布的共轭先验，但此处为了联系MH采样方法解决此问题）
+
+posterior_density <- function(theta, alpha, beta, n, k) {
+  if (theta < 0 || theta > 1) return(0)  # 确保theta在[0, 1]范围内
+  return(dbeta(theta, shape1 = alpha, shape2 = beta) * dbinom(k, size = n, prob = theta))
+}
+
+
+# 计算接受概率--在MH算法中，接受概率应该是 (后验(candidate) * proposal(current | candidate)) / (后验(current) * proposal(candidate | current))。但这里使用的是对称的提议分布（正态分布），所以提议密度的比值是1，这时候接受率可以简化为后验的比值。
+
+# Metropolis-Hastings算法（添加接受率计算）
+metropolis_hastings <- function(posterior, proposal_sd, initial_value, iterations, alpha, beta, n, k) {
+  theta <- numeric(iterations)
+  theta[1] <- initial_value
+  accept <- 0  # 接受计数器
+  
+  for (t in 2:iterations) {
+    # 提出新的候选值
+    candidate <- rnorm(1, mean = theta[t-1], sd = proposal_sd)
+    
+    # 计算接受概率（由于提议分布对称，转移概率比率为1）
+    acceptance_ratio <- min(1, posterior_density(candidate, alpha, beta, n, k) / 
+                             posterior_density(theta[t-1], alpha, beta, n, k))
+    
+    # 生成均匀分布的随机数
+    u <- runif(1)
+    
+    # 更新状态
+    if (u < acceptance_ratio) {
+      theta[t] <- candidate
+      accept <- accept + 1
+    } else {
+      theta[t] <- theta[t-1]
+    }
+  }
+  
+  # 计算接受率
+  accept_rate <- accept / (iterations - 1)
+  return(list(samples = theta, accept_rate = accept_rate))
+}
+
+# 参数设置
+alpha <- 1   # Beta先验参数
+beta <- 1
+n <- 10      # 试验次数
+k <- 4       # 成功次数
+proposal_sd <- 0.3  # 调整提议分布标准差（影响接受率）
+initial_value <- 0.2
+iterations <- 10000
+
+# 运行MCMC
+result <- metropolis_hastings(posterior_density, proposal_sd, initial_value, iterations, alpha, beta, n, k)
+samples <- result$samples
+cat("接受率:", result$accept_rate, "\n")
+
+# 后处理参数
+burn_in <- 2000     # 去除前2000次迭代
+thin <- 5           # 每5次抽样保留1次
+
+# 后处理
+samples_post_burn <- samples[(burn_in + 1):iterations]
+thinned_samples <- samples_post_burn[seq(1, length(samples_post_burn), by = thin)]
+
+# 绘制诊断图形
+
+
+# 1. 原始链的轨迹图
+plot(samples, type = "l", col = "grey", 
+     main = "origin Markov trace plot", 
+     xlab = "iterations", ylab = "theta")
+
+# 绘制原始链的轨迹图的密度图
+density_samples <- density(samples)
+plot(density_samples, main = "Density of MCMC Samples", xlab = "Theta", ylab = "Density")
+
+
+# 2. 处理后链的轨迹图
+plot(thinned_samples, type = "l", col = "skyblue",
+     main = paste("the processed trace plot (burn-in =", burn_in, ", thin =", thin, ")"), 
+     xlab = "sampling times", ylab = "theta")
+
+density_proposed_samples <- density(thinned_samples)
+plot(density_proposed_samples, main = "Density of MCMC thinning Samples", xlab = "Theta", ylab = "Density")
+
+# 3. 自相关图
+acf(thinned_samples, main = "The processed autocorrelation graph", 
+    col = "darkred", lag.max = 40)
+
+# 4. 后验分布直方图与真实后验对比 通过比较直方图和理论后验分布，可以评估MCMC采样是否成功地从真实的后验分布中抽取样本。
+hist(thinned_samples, breaks = 30, probability = TRUE, 
+     main = "Posterior distribution comparison", xlab = "theta", col = "lightgreen")
+curve(dbeta(x, shape1 = alpha + k, shape2 = beta + n - k),  # 真实后验
+      add = TRUE, col = "darkblue", lwd = 2, lty = 2)
+legend("topright", legend = c("MCMC samples", "real posterior distribution"),
+       col = c("lightgreen", "darkblue"), lty = c(1, 2), lwd = c(5, 2),
+       cex =0.3)
+
+
+  
+```
+
+
+
+## 暂不看哈Monte Carlo Simulation (Crash Course on Monte Carlo Simulation from Very Normal vlogger)
+
+### eg of t-tests
+
+``` r
+results = logical(10000)
+for (i in 1:10000){
+  # Student's t-test assumes variances are equal; Welch's t-test assumes variances of the groups are not equal; 
+styleA = rnorm(n=27,mean=10500,sd=1200)
+styleB = rnorm(n=27,mean=10500+600,sd=1200)
+test=t.test(styleA, styleB, var.equal = T)
+results[i] = test[["p.value"]] <0.05
+
+  
+}
+
+library(tidyverse)
+sims = expand.grid(
+  test =c("Student","Welch", "MW"),
+  rep = 1:10000
+  
+) |>
+mutate(
+  filename=paste0(test, "-",rep,".rds")
+)  
+seed = row_number()
+
+
+pwalk(
+  list(sims[["test"]],
+       sims[["filename"]],
+       sims[["seed"]]),
+  runReplication
+  
+)
+
+runReplilation = function(test, filename, seed) {
+  set.seed(seed)
+  
+  A=rnorm(27, mean = 10500, sd=1200)
+  B=rnorm(27,mean=11000,sd=1200)
+  
+  if(test == "Student")
+    hypothesis_test = t.test(A,B,var.equal=T)
+  if(test == "Welch")
+    hypothesis_test =t.test(A,B,var.equal=F)
+  if(test == "MW")
+    hypothesis_test = wilcox.test(A,B)
+  
+  result = list(
+    testname =test,
+    result = hypohtesis_test[["p.value"]]<0.05
+  )
+
+  }
 ```
 
 ## R basic coding
