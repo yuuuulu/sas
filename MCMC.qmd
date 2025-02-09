@@ -7,6 +7,7 @@ editor: visual
 ---
 # Ch2
 
+
 ## Monte Carlo Error
 
 -   Monte Carlo simulations can estimate the posterior statistics under the normal distribution θ \~ N(0,1); Monte Carlo error decreases with the increase of sample size n (蒙特卡洛（Monte Carlo）模拟可以估计正态分布 θ∼N(0,1) 下的后验统计量；蒙特卡洛误差随着样本量 n 的增加而减小)。
