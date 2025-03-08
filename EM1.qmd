@@ -11,17 +11,17 @@ editor: visual
 ### Background
 
 $$Y_1 \sim \text{Exp} (\frac{1}{\theta_1})$$
-$$ Y_2 \sim \text{Exp} (\frac{1}{\theta_2})$$
+$$Y_2 \sim \text{Exp} (\frac{1}{\theta_2})$$
 
-$$ W \sim \text{Bernoulli} $$
+$$W \sim \text{Bernoulli} $$
 
 W is independent of $Y_1$ and $Y_2$ with probability of success $\epsilon = P(W=1)$
 
 - Observed: 
 
-X= $WY_1+(1-W)Y_2$
+$X$ = $WY_1+(1-W)Y_2$
 
-$\theta '=(\theta_1,\theta_2,\epsilon)$
+$\theta '=(\theta_1,\theta_2,\epsilon)$  -- parameters here
 
 pdf of x: $f(x) = \epsilon f_1(x) + (1-\epsilon) f_2(x)$
 
@@ -66,8 +66,9 @@ Q(\theta | \theta_0, X) &=\sum_{i=1}^n \left[ \gamma_i \log f_1(x_i) + (1 - \gam
 \end{align*}
 $$
 
+from
 
-$$[ \frac{\partial Q}{\partial \lambda_1} = \sum_{i=1}^n \gamma_{i} \left( \theta_1 - x_i \right)=0]$$
+$$ \frac{\partial Q}{\partial \theta_1} = \sum_{i=1}^n \gamma_{i} \left( \theta_1 - x_i \right)=0$$
 
 we get $\theta_1 = \frac{\sum_{i=1}^n \gamma_{i} x_i} {\sum_{i=1}^n \gamma_{i}}$
 

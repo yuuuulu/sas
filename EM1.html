@@ -97,14 +97,14 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="eg-of-exponential-function">Eg of exponential function</h2>
 <section id="background" class="level3">
 <h3 class="anchored" data-anchor-id="background">Background</h3>
-<p><span class="math display">\[Y_1 \sim \text{Exp} (\frac{1}{\theta_1})\]</span> <span class="math display">\[ Y_2 \sim \text{Exp} (\frac{1}{\theta_2})\]</span></p>
-<p><span class="math display">\[ W \sim \text{Bernoulli} \]</span></p>
+<p><span class="math display">\[Y_1 \sim \text{Exp} (\frac{1}{\theta_1})\]</span> <span class="math display">\[Y_2 \sim \text{Exp} (\frac{1}{\theta_2})\]</span></p>
+<p><span class="math display">\[W \sim \text{Bernoulli} \]</span></p>
 <p>W is independent of <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> with probability of success <span class="math inline">\(\epsilon = P(W=1)\)</span></p>
 <ul>
 <li>Observed:</li>
 </ul>
-<p>X= <span class="math inline">\(WY_1+(1-W)Y_2\)</span></p>
-<p><span class="math inline">\(\theta '=(\theta_1,\theta_2,\epsilon)\)</span></p>
+<p><span class="math inline">\(X\)</span> = <span class="math inline">\(WY_1+(1-W)Y_2\)</span></p>
+<p><span class="math inline">\(\theta '=(\theta_1,\theta_2,\epsilon)\)</span> – parameters here</p>
 <p>pdf of x: <span class="math inline">\(f(x) = \epsilon f_1(x) + (1-\epsilon) f_2(x)\)</span></p>
 <p>where <span class="math inline">\(f_1(x) = \frac{1}{\theta_1} e^{-\frac{x}{\theta_1}}\)</span>, <span class="math inline">\(f_2(x) = \frac{1}{\theta_2} e^{-\frac{x}{\theta_2}}\)</span></p>
 <p>Suppose we observed a random sample <span class="math inline">\(X' = (X_1, X_2, \ldots, X_n)\)</span> from this mixture distribution with pdf f(x).</p>
@@ -134,7 +134,8 @@ Q(\theta | \theta_0, X) &amp;= \mathbb{E}_{\theta_0} \left[ \sum_{i=1}^n \left[ 
 Q(\theta | \theta_0, X) &amp;=\sum_{i=1}^n \left[ \gamma_i \log f_1(x_i) + (1 - \gamma_i) \log f_2(x_i) \right]  \\
 \end{align*}
 \]</span></p>
-<p><span class="math display">\[[ \frac{\partial Q}{\partial \lambda_1} = \sum_{i=1}^n \gamma_{i} \left( \theta_1 - x_i \right)=0]\]</span></p>
+<p>from</p>
+<p><span class="math display">\[ \frac{\partial Q}{\partial \theta_1} = \sum_{i=1}^n \gamma_{i} \left( \theta_1 - x_i \right)=0\]</span></p>
 <p>we get <span class="math inline">\(\theta_1 = \frac{\sum_{i=1}^n \gamma_{i} x_i} {\sum_{i=1}^n \gamma_{i}}\)</span></p>
 <p>Similarly, <span class="math inline">\(\theta_2 = \frac{\sum_{i=1}^n (1-\gamma_{i} )x_i} {\sum_{i=1}^n (1-\gamma_{i} )}\)</span></p>
 <p><span class="math inline">\(\hat \epsilon= \frac{\sum_{i=1}^n \gamma_{i}} {n}\)</span></p>
